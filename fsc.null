@@ -1,0 +1,41 @@
+#!/bin/bash
+<<property
+Autor:Stephen Dove
+Compania:Afore XXI
+Contact:tecmoi.sdove@xxi-banorte.com
+App:File System Creator
+Version:1.0
+Revision:27032018
+property
+##vars
+vlgrl=""
+lvl=""
+lvp=""
+lvs=""
+##vars
+echo -e "\t \t \n File System Creator \n \n"
+echo -e "\t \n Listando File Systems Existentes \n"
+df -h
+
+echo -e "\t \n Listando Particiones Existentes \n"
+fdisk -l
+
+echo -e "\t \n Listando Volumenes Fisicos Existentes \n"
+pvdisplay
+
+echo -e "\t \n Se Iniciara la Creacion del Volumen \n"
+read -p "Path del Volumen Creado Sobre /dev/ " lvp
+echo "pvcreate /dev/$lvp"
+
+echo -e "\n"
+read -p "Nombre del Volumen Group (numeracion consecutiva): "  vlgrl
+echo "vgcreate vg_$vlgrl /dev/$lvp"
+
+read -p "Tamano de Volumen: "  
+echo "lvcreate -L $lvsG -n lv_$lvl vg_$vlgrl"
+echo "mkfs.ext4 /dev/vg_$vlgrl/lv_$lvl"
+mkdir /$lvp
+echo -e "Se creo "
+pwd
+mount /dev/vg_$vlgrl/lv_$lvl /$lvp
+/dev/mapper/vg_$vlgrl-lv_$lvl /$lvp ext4 defaults        0 0 >> /etc/fstab
